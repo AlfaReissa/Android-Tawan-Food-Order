@@ -1,6 +1,8 @@
 package com.tawan.java.data.remote.service
 
 import com.tawan.java.data.remote.reqres.*
+import com.tawan.java.data.remote.reqres.cuisine.CuisineTawanResponse
+import com.tawan.java.data.remote.reqres.menu.MenuTawanResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -30,6 +32,15 @@ interface ApiService {
         @Field("desc") desc: String,
         @Field("deadline") deadline: String,
     ): Response<SaveTaskResponse>
+
+    @GET("tawan/cuisine")
+    suspend fun getCuisine(
+    ): Response<CuisineTawanResponse>
+
+    @GET("tawan/cuisine")
+    suspend fun getMenu(
+    ): Response<MenuTawanResponse>
+
 
     @POST("task-android/{id}/update")
     @FormUrlEncoded
