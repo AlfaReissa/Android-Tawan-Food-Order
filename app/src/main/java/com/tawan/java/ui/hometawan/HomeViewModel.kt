@@ -1,11 +1,12 @@
-package com.tawan.java.ui.home
+package com.tawan.java.ui.hometawan
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.henrylabs.qumparan.data.remote.QumparanResource
+import com.tawan.java.data.remote.QumparanResource
 import com.tawan.java.data.remote.RemoteDataSource
 import com.tawan.java.data.remote.reqres.*
+import com.tawan.java.data.remote.reqres.menu.MenuTawanResponsekt
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
@@ -16,6 +17,11 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
     private var _taskLiveData =
         MutableLiveData<QumparanResource<TasksResponse?>>()
     val searchLiveData get() = _taskLiveData
+
+    private var _menuLiveData =
+        MutableLiveData<QumparanResource<MenuTawanResponsekt?>>()
+    val menuLiveData get() = _menuLiveData
+
 
     private var _saveTaskLiveData =
         MutableLiveData<QumparanResource<SaveTaskResponse?>>()
@@ -45,6 +51,26 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
             }
         } catch (e: Exception) {
             _taskLiveData.postValue(QumparanResource.Error(e.message.toString()))
+        }
+    }
+
+
+    fun getMenu() = viewModelScope.launch {
+        _menuLiveData.postValue(QumparanResource.Loading())
+        try {
+            val res = ds.getMenu()
+            if (res.isSuccessful) {
+                _menuLiveData.postValue(QumparanResource.Success(res.body()))
+            } else {
+                var message = res.message().toString()
+                res.errorBody()?.let {
+                    val jsonObj = JSONObject(it.charStream().readText())
+                    message = jsonObj.getString("message")
+                }
+                _menuLiveData.postValue(QumparanResource.Error(message))
+            }
+        } catch (e: Exception) {
+            _menuLiveData.postValue(QumparanResource.Error(e.message.toString()))
         }
     }
 

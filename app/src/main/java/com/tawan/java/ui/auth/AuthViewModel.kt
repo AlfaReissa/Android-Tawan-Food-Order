@@ -3,7 +3,7 @@ package com.tawan.java.ui.auth
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.henrylabs.qumparan.data.remote.QumparanResource
+import com.tawan.java.data.remote.QumparanResource
 import com.tawan.java.data.remote.RemoteDataSource
 import com.tawan.java.data.remote.reqres.*
 import kotlinx.coroutines.launch

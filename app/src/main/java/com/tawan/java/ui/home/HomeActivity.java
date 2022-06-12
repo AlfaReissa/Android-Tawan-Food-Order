@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.henrylabs.qumparan.data.remote.QumparanResource;
+import com.tawan.java.data.remote.QumparanResource;
 import com.tawan.java.R;
 import com.tawan.java.customview.BottomSheetTaskFragment;
 import com.tawan.java.data.local.MyPreference;
@@ -17,6 +17,7 @@ import com.tawan.java.data.remote.reqres.TasksResponse;
 import com.tawan.java.databinding.ActivityHomeBinding;
 import com.tawan.java.ui.NavdrawContainerActivity;
 import com.tawan.java.ui.edittask.EditTaskActivity;
+import com.tawan.java.ui.hometawan.HomeViewModel;
 import com.tawan.java.ui.new_task.NewTaskActivity;
 
 import kotlin.Lazy;

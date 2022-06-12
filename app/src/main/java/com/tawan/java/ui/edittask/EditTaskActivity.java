@@ -11,11 +11,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.henrylabs.qumparan.data.remote.QumparanResource;
+import com.tawan.java.data.remote.QumparanResource;
 import com.tawan.java.R;
 import com.tawan.java.data.remote.reqres.DetailTaskResponse;
 import com.tawan.java.databinding.ActivityNewTaskBinding;
-import com.tawan.java.ui.home.HomeViewModel;
+import com.tawan.java.ui.hometawan.HomeViewModel;
 import com.tawan.java.ui.home.MainTaskAdapter;
 import com.tawan.java.utils.DateUtils;
 

@@ -12,6 +12,12 @@ class RemoteDataSource(
     suspend fun register(name: String, email: String, password: String) =
         commonService.register(name = name, email = email, password = password)
 
+    suspend fun getCuisine() =
+        commonService.getCuisine()
+
+    suspend fun getMenu() =
+        commonService.getMenu()
+
     suspend fun getTask(id: String) =
         commonService.getTaskUserById(id)
 

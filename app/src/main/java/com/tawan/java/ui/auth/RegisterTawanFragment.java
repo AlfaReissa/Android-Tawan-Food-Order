@@ -17,8 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.henrylabs.qumparan.data.remote.QumparanResource;
 import com.tawan.java.R;
+import com.tawan.java.data.remote.QumparanResource;
 import com.tawan.java.data.local.MyPreference;
 import com.tawan.java.data.remote.reqres.RegisterResponse.ResData;
 import com.tawan.java.data.remote.reqres.RegisterResponse;
@@ -29,7 +29,6 @@ import kotlin.Lazy;
 
 
 public class RegisterTawanFragment extends Fragment {
-
 
     private FragmentRegisterTawanBinding binding;
     private Lazy<AuthViewModel> authViewModel = inject(AuthViewModel.class);
