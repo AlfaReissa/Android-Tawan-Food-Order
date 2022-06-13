@@ -100,7 +100,21 @@ public class HomeTawanActivity extends AppCompatActivity {
             }
             if (res instanceof QumparanResource.Success) {
                 showLoading(false);
-                UtilSnackbar.showSnakbarSuccess(this, binding.getRoot(), "Berhasil Mengupdate Pesanan");
+                UtilSnackbar.showSnakbarSuccess(this, binding.getRoot(), "Berhasil Mengupdate Keranjang");
+            }
+            if (res instanceof QumparanResource.Error) {
+                showLoading(false);
+                UtilSnackbar.showSnakbarError(this, binding.getRoot(), res.getMessage());
+            }
+        });
+
+        homeViewModel.getValue().getDeleteCartLiveData().observe(this, res -> {
+            if (res instanceof QumparanResource.Loading) {
+                showLoading(true);
+            }
+            if (res instanceof QumparanResource.Success) {
+                showLoading(false);
+                UtilSnackbar.showSnakbarSuccess(this, binding.getRoot(), "Berhasil Menghapus Item dari Keranjang");
             }
             if (res instanceof QumparanResource.Error) {
                 showLoading(false);
@@ -135,6 +149,12 @@ public class HomeTawanActivity extends AppCompatActivity {
             v.etCatatan.setText(data.getNotes());
             v.btnDeleteFromOrder.setVisibility(View.VISIBLE);
             v.btnAddToOrder.setText("Ubah Pesanan");
+
+            v.btnDeleteFromOrder.setOnClickListener(view12 -> {
+                showToast("Menghapus Pesanan");
+                closeCheckoutBottomSheet();
+                homeViewModel.getValue().deleteCart(String.valueOf(data.getId()));
+            });
 
             v.btnAddToOrder.setOnClickListener(view1 -> {
                 if (isCartInputError()) {
@@ -250,9 +270,7 @@ public class HomeTawanActivity extends AppCompatActivity {
             }
         });
 
-        view.btnDeleteFromOrder.setOnClickListener(view12 -> {
-            showToast("Menghapus " + model.getName() + " ke Pesanan");
-        });
+
     }
 
     private void proceedSaveCart(
@@ -293,7 +311,7 @@ public class HomeTawanActivity extends AppCompatActivity {
         v.etJumlah.setText("");
 
         v.btnDeleteFromOrder.setVisibility(View.GONE);
-        v.btnAddToOrder.setText("Tambah ke Pesanan");
+        v.btnAddToOrder.setText("Tambah ke Keranjang");
 
         binding.sheetAddOrder.btnClose.setOnClickListener(view -> {
             closeCheckoutBottomSheet();

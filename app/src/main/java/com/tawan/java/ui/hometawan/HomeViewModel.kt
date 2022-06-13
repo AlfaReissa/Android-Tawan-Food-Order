@@ -28,6 +28,10 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
         MutableLiveData<QumparanResource<OrderItemResponse?>>()
     val checkCartLiveData get() = _checkCartLiveData
 
+    private var _deleteCartLiveData =
+        MutableLiveData<QumparanResource<GeneralApiResponse?>>()
+    val deleteCartLiveData get() = _deleteCartLiveData
+
     private var _saveCartLiveData =
         MutableLiveData<QumparanResource<GeneralApiResponse?>>()
     val saveCartLiveData get() = _saveCartLiveData
@@ -64,6 +68,25 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
             }
         } catch (e: Exception) {
             _taskLiveData.postValue(QumparanResource.Error(e.message.toString()))
+        }
+    }
+
+    fun deleteCart(id: String) = viewModelScope.launch {
+        _deleteCartLiveData.postValue(QumparanResource.Loading())
+        try {
+            val res = ds.deleteFromCart(id)
+            if (res.isSuccessful) {
+                _deleteCartLiveData.postValue(QumparanResource.Success(res.body()))
+            } else {
+                var message = res.message().toString()
+                res.errorBody()?.let {
+                    val jsonObj = JSONObject(it.charStream().readText())
+                    message = jsonObj.getString("message")
+                }
+                _deleteCartLiveData.postValue(QumparanResource.Error(message))
+            }
+        } catch (e: Exception) {
+            _deleteCartLiveData.postValue(QumparanResource.Error(e.message.toString()))
         }
     }
 
