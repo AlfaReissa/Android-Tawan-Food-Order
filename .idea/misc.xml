@@ -149,15 +149,22 @@
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/drawable/bginputunsel.xml" value="0.1165" />
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/drawable/ic_card_sawit_2.xml" value="0.175" />
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/drawable/ic_tawan_header.xml" value="0.176" />
+        <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/drawable/rounded_dialog.xml" value="0.157" />
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/activity_home.xml" value="0.1671875" />
-        <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/activity_home_tawan.xml" value="0.1" />
+        <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/activity_home_tawan.xml" value="0.22" />
+        <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/bottom_sheet_add_menu.xml" value="0.25" />
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/content_register_tawan_fragment.xml" value="0.1234375" />
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/fragment_login_tawan.xml" value="0.209375" />
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/fragment_readtyhm_login.xml" value="0.13269927536231885" />
-        <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/fragment_register_tawan.xml" value="0.12" />
+        <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/fragment_readtyhm_register.xml" value="0.161231884057971" />
+        <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/fragment_register_tawan.xml" value="0.18" />
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/fragment_tawan_register.xml" value="0.1234375" />
+        <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/item_does.xml" value="0.1213768115942029" />
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/item_menu_full.xml" value="0.16" />
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/item_news_compact.xml" value="0.16" />
+        <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/layout_add_to_cart.xml" value="0.20833333333333334" />
+        <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/layout_bottom_sheet_add_to_cart.xml" value="0.14" />
+        <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/layout/uikit_task_bottomsheet.xml" value="0.209375" />
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/menu/activity_main_drawer.xml" value="0.1328125" />
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1328125" />
         <entry key="..\:/Users/henry/OneDrive/Desktop/Zabrina Raissa - Ciptadana/TawanResto/app/src/main/res/menu/navdraw_container.xml" value="0.1328125" />

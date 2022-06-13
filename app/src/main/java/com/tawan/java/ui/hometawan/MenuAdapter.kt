@@ -49,6 +49,8 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.AdapterViewHolder>() {
                 }
             }
 
+            binding.bottomContainer.visibility=View.GONE
+
         }
     }
 

@@ -7,6 +7,7 @@ import com.tawan.java.data.remote.QumparanResource
 import com.tawan.java.data.remote.RemoteDataSource
 import com.tawan.java.data.remote.reqres.*
 import com.tawan.java.data.remote.reqres.menu.MenuTawanResponsekt
+import com.tawan.java.data.remote.reqres.orderitem.OrderItemResponse
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
@@ -21,6 +22,10 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
     private var _menuLiveData =
         MutableLiveData<QumparanResource<MenuTawanResponsekt?>>()
     val menuLiveData get() = _menuLiveData
+
+    private var _checkCartLiveData =
+        MutableLiveData<QumparanResource<OrderItemResponse?>>()
+    val checkCartLiveData get() = _checkCartLiveData
 
 
     private var _saveTaskLiveData =
@@ -71,6 +76,25 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
             }
         } catch (e: Exception) {
             _menuLiveData.postValue(QumparanResource.Error(e.message.toString()))
+        }
+    }
+
+    fun checkOrderItem(idUser:String,idMenu:String) = viewModelScope.launch {
+        _checkCartLiveData.postValue(QumparanResource.Loading())
+        try {
+            val res = ds.checkIfAlreadyAddedInCart(userId = idUser,idMenu)
+            if (res.isSuccessful) {
+                _checkCartLiveData.postValue(QumparanResource.Success(res.body()))
+            } else {
+                var message = res.message().toString()
+                res.errorBody()?.let {
+                    val jsonObj = JSONObject(it.charStream().readText())
+                    message = jsonObj.getString("message")
+                }
+                _checkCartLiveData.postValue(QumparanResource.Error(message))
+            }
+        } catch (e: Exception) {
+            _checkCartLiveData.postValue(QumparanResource.Error(e.message.toString()))
         }
     }
 

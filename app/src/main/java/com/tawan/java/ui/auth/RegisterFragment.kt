@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
-import com.henrylabs.qumparan.data.remote.QumparanResource
+import com.tawan.java.data.remote.QumparanResource
 import com.tawan.java.utils.base.BaseFragment
 import com.tawan.java.R
 import com.tawan.java.data.local.MyPreference

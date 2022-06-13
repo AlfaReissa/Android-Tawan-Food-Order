@@ -1,5 +1,6 @@
 package com.tawan.java.data.remote
 
+import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload
 import com.tawan.java.data.remote.service.ApiService
 
 class RemoteDataSource(
@@ -18,6 +19,13 @@ class RemoteDataSource(
     suspend fun getMenu() =
         commonService.getMenu()
 
+    suspend fun checkIfAlreadyAddedInCart(userId: String, menuId: String) =
+        commonService.checkIfInChart(idUser = userId, menuId)
+
+    suspend fun addItemToCart(payload:OrderItemPayload) = commonService.addItemToCart(
+        payload
+    )
+
     suspend fun getTask(id: String) =
         commonService.getTaskUserById(id)
 
@@ -27,10 +35,10 @@ class RemoteDataSource(
     suspend fun deleteTask(id: String) =
         commonService.deleteTask(id)
 
-    suspend fun saveNewTask(id_user:String,title:String,desc:String,deadline:String) =
+    suspend fun saveNewTask(id_user: String, title: String, desc: String, deadline: String) =
         commonService.saveTask(id_user, title, desc, deadline)
 
-    suspend fun updateTask(id:String,title:String,desc:String,deadline:String) =
+    suspend fun updateTask(id: String, title: String, desc: String, deadline: String) =
         commonService.updateTask(id, title, desc, deadline)
 
 

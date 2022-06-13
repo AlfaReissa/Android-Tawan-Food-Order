@@ -1,4 +1,4 @@
-package com.henrylabs.qumparan.data.remote
+package com.tawan.java.data.remote
 
 sealed class QumparanResource<T>(
     val data: T? = null,

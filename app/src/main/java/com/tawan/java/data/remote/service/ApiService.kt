@@ -3,11 +3,18 @@ package com.tawan.java.data.remote.service
 import com.tawan.java.data.remote.reqres.*
 import com.tawan.java.data.remote.reqres.cuisine.CuisineTawanResponse
 import com.tawan.java.data.remote.reqres.menu.MenuTawanResponsekt
+import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload
+import com.tawan.java.data.remote.reqres.orderitem.OrderItemResponse
 import retrofit2.Response
 import retrofit2.http.*
 
 
 interface ApiService {
+
+    @POST("food-cart/save")
+    suspend fun addItemToCart(
+        @Body() payload: OrderItemPayload,
+    ): Response<GeneralApiResponse>
 
     @POST("auth/login-unsafe")
     @FormUrlEncoded
@@ -54,6 +61,12 @@ interface ApiService {
     suspend fun getTaskUserById(
         @Path("id") id: String
     ): Response<TasksResponse>
+
+    @GET("food-cart/user/{idUser}/menu/{idMenu}")
+    suspend fun checkIfInChart(
+        @Path("idUser") idUser: String,
+        @Path("idMenu") idMenu: String
+    ): Response<OrderItemResponse?>
 
     @GET("task-android/{id}/delete")
     suspend fun deleteTask(

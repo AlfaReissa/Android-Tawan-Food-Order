@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.tawan.java.databinding.UikitTaskBottomsheetBinding as MainBinding
+import com.tawan.java.databinding.BottomSheetAddMenuBinding as MainBinding
 
 
 class BottomSheetTaskFragment : BottomSheetDialogFragment() {
@@ -18,7 +18,7 @@ class BottomSheetTaskFragment : BottomSheetDialogFragment() {
     private lateinit var deleteClickListener: () -> Unit
 
     companion object {
-        val TAG = "LINK_POPUP_DIALOG"
+        val TAG = "LINK_POPUP_EDIT"
         fun instance(
             deleteClickListener: () -> Unit = {},
             editClickListener: () -> Unit = {},
@@ -55,19 +55,7 @@ class BottomSheetTaskFragment : BottomSheetDialogFragment() {
     private fun initUI() = with(binding) {
         this@BottomSheetTaskFragment.apply {
 
-            listOf(imgDelete, labelDelete).forEachIndexed { _, view ->
-                view.setOnClickListener {
-                    deleteClickListener.invoke()
-                    this.dismiss()
-                }
-            }
 
-            listOf(imgEdit, labelEdit).forEachIndexed { _, view ->
-                view.setOnClickListener {
-                    editClickListener.invoke()
-                    this.dismiss()
-                }
-            }
 
         }
     }
