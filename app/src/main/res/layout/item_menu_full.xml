@@ -68,10 +68,12 @@
 
                 <EditText
                     android:id="@+id/et_jumlah"
+                    android:minWidth="@dimen/dimen_40dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="5dp"
                     android:inputType="number"
+                    android:enabled="false"
                     android:fontFamily="@font/poppins_regular"
                     android:textColor="@color/black"
                     android:textSize="12sp"
@@ -98,10 +100,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="5dp"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:fontFamily="@font/poppins_regular"
                     android:textColor="@color/black"
                     android:textSize="12sp"
+                    android:enabled="false"
                     android:hint="Misal : 2 Pedas dan 1 Sedang"
                     app:layout_constraintTop_toBottomOf="@id/container_card"
                     />

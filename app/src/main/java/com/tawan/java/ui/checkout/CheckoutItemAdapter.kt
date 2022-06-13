@@ -30,10 +30,15 @@ class CheckoutItemAdapter : RecyclerView.Adapter<CheckoutItemAdapter.AdapterView
         fun onBind(model: UserCartResponsekt.ResData.OrderedItem) {
             val mContext = binding.root.context
 
-            binding.tvMain.text=model.menu.name
-            binding.tvDescription.text=model.menu.desc
+            binding.tvMain.text = model.menu.name
+            binding.tvDescription.text = model.menu.desc
 
-            binding.tvPrice.text=model.price
+            binding.tvPrice.text = model.price
+
+            if (model.notes != null) {
+                binding.etCatatan.setText(model.notes.toString())
+            }
+            binding.etJumlah.setText(model.quantity.toString())
 
             Glide
                 .with(binding.root)
@@ -54,7 +59,8 @@ class CheckoutItemAdapter : RecyclerView.Adapter<CheckoutItemAdapter.AdapterView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_menu_full, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_menu_full, parent, false)
         return AdapterViewHolder(view)
     }
 

@@ -45,7 +45,7 @@ data class UserCartResponsekt(
             @SerializedName("menu_name")
             val menuName: String,
             @SerializedName("notes")
-            val notes: Any,
+            val notes: String?,
             @SerializedName("price")
             val price: String,
             @SerializedName("price_multiplied")
