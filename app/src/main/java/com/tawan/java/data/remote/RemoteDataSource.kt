@@ -26,6 +26,14 @@ class RemoteDataSource(
         payload
     )
 
+    suspend fun updateItemToCart(payload:OrderItemPayload) = commonService.updateItemToCart(
+        id = payload.id.toString(), payload = payload
+    )
+
+    suspend fun deleteFromCart(id: String) =
+        commonService.deleteFromCart(id)
+
+
     suspend fun getTask(id: String) =
         commonService.getTaskUserById(id)
 

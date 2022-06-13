@@ -16,6 +16,12 @@ interface ApiService {
         @Body() payload: OrderItemPayload,
     ): Response<GeneralApiResponse>
 
+    @POST("food-cart/{id}/update")
+    suspend fun updateItemToCart(
+        @Path("id") id:String,
+        @Body() payload: OrderItemPayload,
+    ): Response<GeneralApiResponse>
+
     @POST("auth/login-unsafe")
     @FormUrlEncoded
     suspend fun login(
@@ -61,6 +67,11 @@ interface ApiService {
     suspend fun getTaskUserById(
         @Path("id") id: String
     ): Response<TasksResponse>
+
+    @GET("food-cart/{id}/delete")
+    suspend fun deleteFromCart(
+        @Path("id") id: String
+    ): Response<GeneralApiResponse>
 
     @GET("food-cart/user/{idUser}/menu/{idMenu}")
     suspend fun checkIfInChart(

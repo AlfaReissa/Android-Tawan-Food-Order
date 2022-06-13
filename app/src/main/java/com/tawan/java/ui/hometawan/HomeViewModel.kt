@@ -7,6 +7,7 @@ import com.tawan.java.data.remote.QumparanResource
 import com.tawan.java.data.remote.RemoteDataSource
 import com.tawan.java.data.remote.reqres.*
 import com.tawan.java.data.remote.reqres.menu.MenuTawanResponsekt
+import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemResponse
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -27,6 +28,13 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
         MutableLiveData<QumparanResource<OrderItemResponse?>>()
     val checkCartLiveData get() = _checkCartLiveData
 
+    private var _saveCartLiveData =
+        MutableLiveData<QumparanResource<GeneralApiResponse?>>()
+    val saveCartLiveData get() = _saveCartLiveData
+
+    private var _updateCartLiveData =
+        MutableLiveData<QumparanResource<GeneralApiResponse?>>()
+    val updateCartLiveData get() = _updateCartLiveData
 
     private var _saveTaskLiveData =
         MutableLiveData<QumparanResource<SaveTaskResponse?>>()
@@ -56,6 +64,44 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
             }
         } catch (e: Exception) {
             _taskLiveData.postValue(QumparanResource.Error(e.message.toString()))
+        }
+    }
+
+    fun saveCartResponse(payload: OrderItemPayload) = viewModelScope.launch {
+        _saveCartLiveData.postValue(QumparanResource.Loading())
+        try {
+            val res = ds.addItemToCart(payload)
+            if (res.isSuccessful) {
+                _saveCartLiveData.postValue(QumparanResource.Success(res.body()))
+            } else {
+                var message = res.message().toString()
+                res.errorBody()?.let {
+                    val jsonObj = JSONObject(it.charStream().readText())
+                    message = jsonObj.getString("message")
+                }
+                _saveCartLiveData.postValue(QumparanResource.Error(message))
+            }
+        } catch (e: Exception) {
+            _saveCartLiveData.postValue(QumparanResource.Error(e.message.toString()))
+        }
+    }
+
+    fun updateCart(payload: OrderItemPayload) = viewModelScope.launch {
+        _updateCartLiveData.postValue(QumparanResource.Loading())
+        try {
+            val res = ds.updateItemToCart(payload)
+            if (res.isSuccessful) {
+                _updateCartLiveData.postValue(QumparanResource.Success(res.body()))
+            } else {
+                var message = res.message().toString()
+                res.errorBody()?.let {
+                    val jsonObj = JSONObject(it.charStream().readText())
+                    message = jsonObj.getString("message")
+                }
+                _updateCartLiveData.postValue(QumparanResource.Error(message))
+            }
+        } catch (e: Exception) {
+            _updateCartLiveData.postValue(QumparanResource.Error(e.message.toString()))
         }
     }
 

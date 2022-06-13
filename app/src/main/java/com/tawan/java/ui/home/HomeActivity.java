@@ -5,20 +5,24 @@ import static org.koin.java.KoinJavaComponent.inject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.tawan.java.data.remote.QumparanResource;
 import com.tawan.java.R;
 import com.tawan.java.customview.BottomSheetTaskFragment;
 import com.tawan.java.data.local.MyPreference;
+import com.tawan.java.data.remote.reqres.GeneralApiResponse;
 import com.tawan.java.data.remote.reqres.TasksResponse;
 import com.tawan.java.databinding.ActivityHomeBinding;
 import com.tawan.java.ui.NavdrawContainerActivity;
 import com.tawan.java.ui.edittask.EditTaskActivity;
 import com.tawan.java.ui.hometawan.HomeViewModel;
 import com.tawan.java.ui.new_task.NewTaskActivity;
+import com.tawan.java.utils.UtilSnackbar;
 
 import kotlin.Lazy;
 import kotlin.Unit;
@@ -85,7 +89,10 @@ public class HomeActivity extends AppCompatActivity {
                 new NewTaskActivity().showToast(this, getString(R.string.data_deleted_fail));
             }
         });
+
+
     }
+
 
     private void getUserTask() {
         homeViewModel.getValue().getUserTask(
@@ -97,9 +104,9 @@ public class HomeActivity extends AppCompatActivity {
         adapter.setWithNewData(data.getListTask());
         adapter.notifyDataSetChanged();
 
-        if(adapter.getItemCount()>0){
+        if (adapter.getItemCount() > 0) {
             binding.endpage.setVisibility(View.GONE);
-        }else{
+        } else {
             binding.endpage.setVisibility(View.VISIBLE);
         }
     }
@@ -153,5 +160,9 @@ public class HomeActivity extends AppCompatActivity {
         binding.btnAddNew.setOnClickListener(view -> {
             startActivity(new Intent(this, NewTaskActivity.class));
         });
+    }
+
+    public void showToast(Context context, String text) {
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 }
