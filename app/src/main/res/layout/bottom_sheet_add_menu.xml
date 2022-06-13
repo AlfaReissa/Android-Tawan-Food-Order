@@ -5,6 +5,8 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_marginEnd="5dp"
+    android:elevation="999dp"
+    android:clickable="true"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
     android:orientation="vertical">

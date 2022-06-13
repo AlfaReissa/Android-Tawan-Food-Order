@@ -25,6 +25,9 @@
             android:name="com.tawan.java.ui.new_task.NewTaskActivity"
             android:exported="false" />
         <activity
+            android:name="com.tawan.java.ui.checkout.CheckoutActivity"
+            android:exported="false" />
+        <activity
             android:name="com.tawan.java.ui.hometawan.HomeTawanActivity"
             android:exported="false" />
         <activity

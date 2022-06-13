@@ -1,9 +1,8 @@
-package com.tawan.java.ui.hometawan;
+package com.tawan.java.ui.checkout;
 
 import static org.koin.java.KoinJavaComponent.inject;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -11,32 +10,32 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.tawan.java.R;
-import com.tawan.java.data.remote.QumparanResource;
 import com.tawan.java.data.local.MyPreference;
+import com.tawan.java.data.remote.QumparanResource;
 import com.tawan.java.data.remote.reqres.GeneralApiResponse;
 import com.tawan.java.data.remote.reqres.cart.UserCartResponsekt;
 import com.tawan.java.data.remote.reqres.cart.UserCartResponsekt.ResData.OrderedItem;
 import com.tawan.java.data.remote.reqres.menu.MenuTawanResponsekt;
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload;
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemResponse;
-import com.tawan.java.databinding.ActivityHomeTawanBinding;
+import com.tawan.java.databinding.ActivityCheckoutBinding;
 import com.tawan.java.databinding.BottomSheetAddMenuBinding;
-import com.tawan.java.ui.NavdrawContainerActivity;
-import com.tawan.java.ui.checkout.CheckoutActivity;
 import com.tawan.java.ui.home.MainTaskAdapter;
+import com.tawan.java.ui.hometawan.HomeViewModel;
+import com.tawan.java.ui.hometawan.MenuAdapter;
 import com.tawan.java.utils.UtilSnackbar;
 
 import kotlin.Lazy;
 
-public class HomeTawanActivity extends AppCompatActivity {
+public class CheckoutActivity extends AppCompatActivity {
 
-    ActivityHomeTawanBinding binding;
+    ActivityCheckoutBinding binding;
     MainTaskAdapter adapter;
-    MenuAdapter menuAdapter;
+    CheckoutItemAdapter cartAdapter;
+
     private Lazy<HomeViewModel> homeViewModel = inject(HomeViewModel.class);
     boolean isAnyBottomSheetVisible = false;
 
@@ -56,70 +55,18 @@ public class HomeTawanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityHomeTawanBinding.inflate(getLayoutInflater());
+        binding = ActivityCheckoutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         adapter = new MainTaskAdapter();
-        menuAdapter = new MenuAdapter();
-
-        binding.greetingName.setText(getUserName() + "-" + getUserId());
-        binding.containerCheckout.setVisibility(View.GONE);
-
-        binding.containerCheckout.setOnClickListener(view -> {
-            startActivity(new Intent(this, CheckoutActivity.class));
-        });
+        cartAdapter = new CheckoutItemAdapter();
 
         initView();
         initData();
     }
 
     private void initData() {
-        getMenuTawan();
-
-        homeViewModel.getValue().getCheckCartLiveData().observe(this, rr -> {
-            if (rr instanceof QumparanResource.Loading) {
-                showLoadingOnSheetCheckout(true);
-            }
-            if (rr instanceof QumparanResource.Success) {
-                showLoadingOnSheetCheckout(false);
-                setupLayoutBottomSheetOnExist(rr.getData());
-            }
-            if (rr instanceof QumparanResource.Error) {
-                showLoadingOnSheetCheckout(false);
-            }
-        });
-
-        homeViewModel.getValue().getSaveCartLiveData().observe(this, res -> {
-            fetchUserCart();
-            if (res instanceof QumparanResource.Loading) {
-                showLoading(true);
-            }
-            if (res instanceof QumparanResource.Success) {
-                showLoading(false);
-                UtilSnackbar.showSnakbarSuccess(this, binding.getRoot(), "Berhasil Menambahkan Data");
-            }
-            if (res instanceof QumparanResource.Error) {
-                showLoading(false);
-                UtilSnackbar.showSnakbarError(this, binding.getRoot(), res.getMessage());
-            }
-        });
-
-        homeViewModel.getValue().getUpdateCartLiveData().observe(this, res -> {
-            fetchUserCart();
-            if (res instanceof QumparanResource.Loading) {
-                showLoading(true);
-            }
-            if (res instanceof QumparanResource.Success) {
-                showLoading(false);
-                UtilSnackbar.showSnakbarSuccess(this, binding.getRoot(), "Berhasil Mengupdate Keranjang");
-            }
-            if (res instanceof QumparanResource.Error) {
-                showLoading(false);
-                UtilSnackbar.showSnakbarError(this, binding.getRoot(), res.getMessage());
-            }
-        });
-
-
+        homeViewModel.getValue().getUserCart(getUserId());
         homeViewModel.getValue().getUserCartLiveData().observe(this, rr -> {
             if (rr instanceof QumparanResource.Loading) {
                 showLoading(true);
@@ -150,47 +97,32 @@ public class HomeTawanActivity extends AppCompatActivity {
                 UtilSnackbar.showSnakbarError(this, binding.getRoot(), res.getMessage());
             }
         });
-
-        homeViewModel.getValue().getMenuLiveData().observe(this, rr -> {
-            if (rr instanceof QumparanResource.Loading) {
-                showLoading(true);
-            }
-            if (rr instanceof QumparanResource.Success) {
-                fetchUserCart();
-                showLoading(false);
-                setupMenuData(rr.getData());
-            }
-            if (rr instanceof QumparanResource.Error) {
-                showToast(rr.getMessage());
-                showLoading(false);
-            }
-        });
     }
 
     private void setupWholeCartUI(UserCartResponsekt.ResData rr) {
-        binding.tvCheckout.setText(rr.getTotalPriceRupiahFormat());
+        binding.tvTotalHarga.setText("Total Harga : " + rr.getTotalPriceRupiahFormat());
+        binding.tvTotalQuantity.setText("Total Pesanan : " + String.valueOf(rr.getTotalQuantity()) + " pcs");
+
         StringBuilder ordered = new StringBuilder();
-        for(OrderedItem item : rr.getOrderedItem()) {
-            ordered.append(item.getMenuName()).append(", ");
+        int count = 0;
+        for (OrderedItem item : rr.getOrderedItem()) {
+            ordered.append(String.valueOf(count) + ". " + item.getMenuName()).append("\n");
+            count++;
         }
 
-        if(rr.getTotalQuantity()==0){
-            binding.containerCheckout.setVisibility(View.GONE);
-        }else{
-            if(binding.containerCheckout.getVisibility() == View.GONE){
-                binding.containerCheckout.setAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_appear_300ms));
-            }
+        cartAdapter.setWithNewData(rr.getOrderedItem());
 
-            binding.containerCheckout.setVisibility(View.VISIBLE);
-        }
 
-        binding.tvItemCheckout.setText(ordered.toString());
+        binding.tvList.setText(ordered.toString());
     }
 
     private void fetchUserCart() {
         homeViewModel.getValue().getUserCart(getUserId());
     }
 
+
+    private void addOrderSuccess(QumparanResource<GeneralApiResponse> res) {
+    }
 
     private void setupLayoutBottomSheetOnExist(OrderItemResponse data) {
         if (data != null) {
@@ -238,10 +170,7 @@ public class HomeTawanActivity extends AppCompatActivity {
         ));
     }
 
-    private void setupMenuData(MenuTawanResponsekt data) {
-        menuAdapter.setWithNewData(data);
-        menuAdapter.notifyDataSetChanged();
-    }
+
 
     private void getMenuTawan() {
         homeViewModel.getValue().getMenu();
@@ -263,43 +192,11 @@ public class HomeTawanActivity extends AppCompatActivity {
 
     private void initView() {
 
-        binding.btnLogout.setOnClickListener(view -> {
-            new MyPreference(this).clearPreferences();
-            finish();
-            startActivity(new Intent(this, NavdrawContainerActivity.class));
-        });
-
-
-        binding.rv.setAdapter(menuAdapter);
+        binding.rv.setAdapter(cartAdapter);
         binding.rv.setLayoutManager(new LinearLayoutManager(this));
-        binding.rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 || dy < 0 && binding.containerCheckout.getVisibility() == View.VISIBLE) {
-//                    binding.containerCheckout.setVisibility(View.GONE);
-//                    binding.containerCheckout.setAnimation(AnimationUtils.loadAnimation(
-//                            HomeTawanActivity.this, R.anim.bottom_gone_300ms)
-//                    );
-                }
-            }
 
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    binding.containerCheckout.setVisibility(View.VISIBLE);
-//                    binding.containerCheckout.setAnimation(
-//                            AnimationUtils.loadAnimation(
-//                                    HomeTawanActivity.this, R.anim.bottom_appear_300ms)
-//                    );
-                }
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
+        cartAdapter.setupAdapterInterface(model -> {
 
-
-        menuAdapter.setupAdapterInterface(model -> {
-            showAddToCart(model);
-            setupAddtCart(model);
         });
     }
 
