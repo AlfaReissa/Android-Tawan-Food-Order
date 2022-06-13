@@ -11,12 +11,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.tawan.java.R;
 import com.tawan.java.data.remote.QumparanResource;
 import com.tawan.java.data.local.MyPreference;
 import com.tawan.java.data.remote.reqres.GeneralApiResponse;
+import com.tawan.java.data.remote.reqres.cart.UserCartResponsekt;
+import com.tawan.java.data.remote.reqres.cart.UserCartResponsekt.ResData.OrderedItem;
 import com.tawan.java.data.remote.reqres.menu.MenuTawanResponsekt;
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload;
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemResponse;
@@ -59,6 +62,7 @@ public class HomeTawanActivity extends AppCompatActivity {
         menuAdapter = new MenuAdapter();
 
         binding.greetingName.setText(getUserName() + "-" + getUserId());
+        binding.containerCheckout.setVisibility(View.GONE);
 
         initView();
         initData();
@@ -81,6 +85,7 @@ public class HomeTawanActivity extends AppCompatActivity {
         });
 
         homeViewModel.getValue().getSaveCartLiveData().observe(this, res -> {
+            fetchUserCart();
             if (res instanceof QumparanResource.Loading) {
                 showLoading(true);
             }
@@ -95,6 +100,7 @@ public class HomeTawanActivity extends AppCompatActivity {
         });
 
         homeViewModel.getValue().getUpdateCartLiveData().observe(this, res -> {
+            fetchUserCart();
             if (res instanceof QumparanResource.Loading) {
                 showLoading(true);
             }
@@ -108,11 +114,29 @@ public class HomeTawanActivity extends AppCompatActivity {
             }
         });
 
+
+        homeViewModel.getValue().getUserCartLiveData().observe(this, rr -> {
+            if (rr instanceof QumparanResource.Loading) {
+                showLoading(true);
+            }
+            if (rr instanceof QumparanResource.Success) {
+                showLoading(false);
+                setupWholeCartUI(rr.getData().getResData());
+            }
+            if (rr instanceof QumparanResource.Error) {
+                showToast(rr.getMessage());
+                showLoading(false);
+            }
+        });
+
+
         homeViewModel.getValue().getDeleteCartLiveData().observe(this, res -> {
+            fetchUserCart();
             if (res instanceof QumparanResource.Loading) {
                 showLoading(true);
             }
             if (res instanceof QumparanResource.Success) {
+                fetchUserCart();
                 showLoading(false);
                 UtilSnackbar.showSnakbarSuccess(this, binding.getRoot(), "Berhasil Menghapus Item dari Keranjang");
             }
@@ -127,6 +151,7 @@ public class HomeTawanActivity extends AppCompatActivity {
                 showLoading(true);
             }
             if (rr instanceof QumparanResource.Success) {
+                fetchUserCart();
                 showLoading(false);
                 setupMenuData(rr.getData());
             }
@@ -135,7 +160,30 @@ public class HomeTawanActivity extends AppCompatActivity {
                 showLoading(false);
             }
         });
+    }
 
+    private void setupWholeCartUI(UserCartResponsekt.ResData rr) {
+        binding.tvCheckout.setText(rr.getTotalPriceRupiahFormat());
+        StringBuilder ordered = new StringBuilder();
+        for(OrderedItem item : rr.getOrderedItem()) {
+            ordered.append(item.getMenuName()).append(", ");
+        }
+
+        if(rr.getTotalQuantity()==0){
+            binding.containerCheckout.setVisibility(View.GONE);
+        }else{
+            if(binding.containerCheckout.getVisibility() == View.GONE){
+                binding.containerCheckout.setAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_appear_300ms));
+            }
+
+            binding.containerCheckout.setVisibility(View.VISIBLE);
+        }
+
+        binding.tvItemCheckout.setText(ordered.toString());
+    }
+
+    private void fetchUserCart() {
+        homeViewModel.getValue().getUserCart(getUserId());
     }
 
 
@@ -222,6 +270,29 @@ public class HomeTawanActivity extends AppCompatActivity {
 
         binding.rv.setAdapter(menuAdapter);
         binding.rv.setLayoutManager(new LinearLayoutManager(this));
+        binding.rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && binding.containerCheckout.getVisibility() == View.VISIBLE) {
+//                    binding.containerCheckout.setVisibility(View.GONE);
+//                    binding.containerCheckout.setAnimation(AnimationUtils.loadAnimation(
+//                            HomeTawanActivity.this, R.anim.bottom_gone_300ms)
+//                    );
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    binding.containerCheckout.setVisibility(View.VISIBLE);
+//                    binding.containerCheckout.setAnimation(
+//                            AnimationUtils.loadAnimation(
+//                                    HomeTawanActivity.this, R.anim.bottom_appear_300ms)
+//                    );
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
 
 
         menuAdapter.setupAdapterInterface(model -> {

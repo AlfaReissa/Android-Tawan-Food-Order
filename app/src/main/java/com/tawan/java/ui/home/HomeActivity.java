@@ -4,6 +4,7 @@ import static org.koin.java.KoinJavaComponent.inject;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -62,6 +63,7 @@ public class HomeActivity extends AppCompatActivity {
     private void initData() {
         getUserTask();
 
+
         homeViewModel.getValue().getSearchLiveData().observe(this, tasksResponseQumparanResource -> {
             if (tasksResponseQumparanResource instanceof QumparanResource.Loading) {
                 showLoading(true);
@@ -89,10 +91,13 @@ public class HomeActivity extends AppCompatActivity {
                 new NewTaskActivity().showToast(this, getString(R.string.data_deleted_fail));
             }
         });
-
-
     }
 
+
+
+    private void setupWholeCartUI() {
+
+    }
 
     private void getUserTask() {
         homeViewModel.getValue().getUserTask(
@@ -146,6 +151,7 @@ public class HomeActivity extends AppCompatActivity {
         binding.rvOurdoes.setAdapter(adapter);
         binding.rvOurdoes.setLayoutManager(new LinearLayoutManager(this));
         binding.rvOurdoes.setHasFixedSize(true);
+
 
 
         adapter.setAdapterInterface(model -> {

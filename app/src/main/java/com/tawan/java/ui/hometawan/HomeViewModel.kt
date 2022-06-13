@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.tawan.java.data.remote.QumparanResource
 import com.tawan.java.data.remote.RemoteDataSource
 import com.tawan.java.data.remote.reqres.*
+import com.tawan.java.data.remote.reqres.cart.UserCartResponsekt
 import com.tawan.java.data.remote.reqres.menu.MenuTawanResponsekt
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemResponse
@@ -27,6 +28,10 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
     private var _checkCartLiveData =
         MutableLiveData<QumparanResource<OrderItemResponse?>>()
     val checkCartLiveData get() = _checkCartLiveData
+
+    private var _userCartLiveData =
+        MutableLiveData<QumparanResource<UserCartResponsekt?>>()
+    val userCartLiveData get() = _userCartLiveData
 
     private var _deleteCartLiveData =
         MutableLiveData<QumparanResource<GeneralApiResponse?>>()
@@ -68,6 +73,25 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
             }
         } catch (e: Exception) {
             _taskLiveData.postValue(QumparanResource.Error(e.message.toString()))
+        }
+    }
+
+    fun getUserCart(id: String) = viewModelScope.launch {
+        _userCartLiveData.postValue(QumparanResource.Loading())
+        try {
+            val res = ds.userCart(id)
+            if (res.isSuccessful) {
+                _userCartLiveData.postValue(QumparanResource.Success(res.body()))
+            } else {
+                var message = res.message().toString()
+                res.errorBody()?.let {
+                    val jsonObj = JSONObject(it.charStream().readText())
+                    message = jsonObj.getString("message")
+                }
+                _userCartLiveData.postValue(QumparanResource.Error(message))
+            }
+        } catch (e: Exception) {
+            _userCartLiveData.postValue(QumparanResource.Error(e.message.toString()))
         }
     }
 

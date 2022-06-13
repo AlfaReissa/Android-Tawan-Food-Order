@@ -1,6 +1,7 @@
 package com.tawan.java.data.remote.service
 
 import com.tawan.java.data.remote.reqres.*
+import com.tawan.java.data.remote.reqres.cart.UserCartResponsekt
 import com.tawan.java.data.remote.reqres.cuisine.CuisineTawanResponse
 import com.tawan.java.data.remote.reqres.menu.MenuTawanResponsekt
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload
@@ -67,6 +68,11 @@ interface ApiService {
     suspend fun getTaskUserById(
         @Path("id") id: String
     ): Response<TasksResponse>
+
+    @GET("food-cart/user/{id}")
+    suspend fun getUserFoodCart(
+        @Path("id") id: String
+    ): Response<UserCartResponsekt>
 
     @GET("food-cart/{id}/delete")
     suspend fun deleteFromCart(

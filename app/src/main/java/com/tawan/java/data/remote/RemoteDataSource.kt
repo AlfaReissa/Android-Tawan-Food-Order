@@ -33,6 +33,8 @@ class RemoteDataSource(
     suspend fun deleteFromCart(id: String) =
         commonService.deleteFromCart(id)
 
+    suspend fun userCart(id: String) =
+        commonService.getUserFoodCart(id)
 
     suspend fun getTask(id: String) =
         commonService.getTaskUserById(id)
