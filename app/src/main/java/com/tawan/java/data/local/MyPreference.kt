@@ -46,6 +46,11 @@ class MyPreference(context: Context) {
         editor.commit()
     }
 
+    fun saveRestoID(id: String) {
+        editor.putString("RESTO_ID", id)
+        editor.commit()
+    }
+
     fun saveUserEmail(id: String) {
         editor.putString("USER_EMAIL", id)
         editor.commit()
@@ -53,6 +58,10 @@ class MyPreference(context: Context) {
 
     fun getUserEmail(): String? {
         return sharedPref.getString("USER_EMAIL", "")
+    }
+
+    fun getRestoID(): String {
+        return sharedPref.getString("RESTO_ID", "") ?: ""
     }
 
     fun saveUserPassword(id: String) {

@@ -7,6 +7,8 @@ import com.tawan.java.data.remote.QumparanResource
 import com.tawan.java.data.remote.RemoteDataSource
 import com.tawan.java.data.remote.reqres.*
 import com.tawan.java.data.remote.reqres.cart.UserCartResponsekt
+import com.tawan.java.data.remote.reqres.invoice.InvoicePayload
+import com.tawan.java.data.remote.reqres.invoice.InvoicePayloadkt
 import com.tawan.java.data.remote.reqres.menu.MenuTawanResponsekt
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemResponse
@@ -28,6 +30,10 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
     private var _checkCartLiveData =
         MutableLiveData<QumparanResource<OrderItemResponse?>>()
     val checkCartLiveData get() = _checkCartLiveData
+
+    private var _saveInvoiceLiveData =
+        MutableLiveData<QumparanResource<GeneralApiResponse?>>()
+    val saveInvoiceLiveData get() = _saveInvoiceLiveData
 
     private var _userCartLiveData =
         MutableLiveData<QumparanResource<UserCartResponsekt?>>()
@@ -57,24 +63,6 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
         MutableLiveData<QumparanResource<DetailTaskResponse?>>()
     val detailTaskLiveData get() = _detailTaskLiveData
 
-    fun getUserTask(id: String) = viewModelScope.launch {
-        _taskLiveData.postValue(QumparanResource.Loading())
-        try {
-            val res = ds.getTask(id)
-            if (res.isSuccessful) {
-                _taskLiveData.postValue(QumparanResource.Success(res.body()))
-            } else {
-                var message = res.message().toString()
-                res.errorBody()?.let {
-                    val jsonObj = JSONObject(it.charStream().readText())
-                    message = jsonObj.getString("message")
-                }
-                _taskLiveData.postValue(QumparanResource.Error(message))
-            }
-        } catch (e: Exception) {
-            _taskLiveData.postValue(QumparanResource.Error(e.message.toString()))
-        }
-    }
 
     fun getUserCart(id: String) = viewModelScope.launch {
         _userCartLiveData.postValue(QumparanResource.Loading())
@@ -188,6 +176,25 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
             }
         } catch (e: Exception) {
             _checkCartLiveData.postValue(QumparanResource.Error(e.message.toString()))
+        }
+    }
+
+    fun saveInvoice(payload: InvoicePayloadkt) = viewModelScope.launch {
+        _saveInvoiceLiveData.postValue(QumparanResource.Loading())
+        try {
+            val res = ds.addToInvoice(payload)
+            if (res.isSuccessful) {
+                _saveInvoiceLiveData.postValue(QumparanResource.Success(res.body()))
+            } else {
+                var message = res.message().toString()
+                res.errorBody()?.let {
+                    val jsonObj = JSONObject(it.charStream().readText())
+                    message = jsonObj.getString("message")
+                }
+                _saveInvoiceLiveData.postValue(QumparanResource.Error(message))
+            }
+        } catch (e: Exception) {
+            _saveInvoiceLiveData.postValue(QumparanResource.Error(e.message.toString()))
         }
     }
 

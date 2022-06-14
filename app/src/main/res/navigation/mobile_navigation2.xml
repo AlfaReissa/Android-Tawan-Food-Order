@@ -6,16 +6,6 @@
     app:startDestination="@+id/loginTawanFragment">
 
     <fragment
-        android:id="@+id/readthymLoginFragment"
-        android:name="com.tawan.java.ui.auth.ReadthymLoginFragment"
-        android:label="Login" />
-
-    <fragment
-        android:id="@+id/registerFragment"
-        android:name="com.tawan.java.ui.auth.RegisterFragment"
-        android:label="RegisterFragment" />
-
-    <fragment
         android:id="@+id/loginTawanFragment"
         android:name="com.tawan.java.ui.auth.LoginTawanFragment"
         android:label="LoginTawanFragment" />

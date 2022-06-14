@@ -3,6 +3,8 @@ package com.tawan.java.data.remote.service
 import com.tawan.java.data.remote.reqres.*
 import com.tawan.java.data.remote.reqres.cart.UserCartResponsekt
 import com.tawan.java.data.remote.reqres.cuisine.CuisineTawanResponse
+import com.tawan.java.data.remote.reqres.invoice.InvoicePayload
+import com.tawan.java.data.remote.reqres.invoice.InvoicePayloadkt
 import com.tawan.java.data.remote.reqres.menu.MenuTawanResponsekt
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemResponse
@@ -21,6 +23,11 @@ interface ApiService {
     suspend fun updateItemToCart(
         @Path("id") id:String,
         @Body() payload: OrderItemPayload,
+    ): Response<GeneralApiResponse>
+
+    @POST("food-invoice/save")
+    suspend fun saveInvoice(
+        @Body() payload: InvoicePayloadkt,
     ): Response<GeneralApiResponse>
 
     @POST("auth/login-unsafe")

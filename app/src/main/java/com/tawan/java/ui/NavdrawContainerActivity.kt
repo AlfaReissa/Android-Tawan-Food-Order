@@ -82,25 +82,6 @@ class NavdrawContainerActivity : BaseActivity() {
             }
         }
 
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            getSupportActionBar()?.hide()
-            hideSoftKeyBoard(this)
-
-            when (getCurrentNav()) {
-                R.id.nav_home,
-                R.id.readthymLoginFragment -> {
-                    hideBottomNav()
-                }
-                else -> {
-                    hideBottomNav()
-                }
-            }
-
-            when (getCurrentNav()) {
-                R.id.nav_home -> {
-                }
-            }
-        }
     }
 
 

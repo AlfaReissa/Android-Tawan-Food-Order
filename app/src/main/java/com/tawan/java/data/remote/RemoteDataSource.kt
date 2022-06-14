@@ -1,5 +1,7 @@
 package com.tawan.java.data.remote
 
+import com.tawan.java.data.remote.reqres.invoice.InvoicePayload
+import com.tawan.java.data.remote.reqres.invoice.InvoicePayloadkt
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload
 import com.tawan.java.data.remote.service.ApiService
 
@@ -22,13 +24,16 @@ class RemoteDataSource(
     suspend fun checkIfAlreadyAddedInCart(userId: String, menuId: String) =
         commonService.checkIfInChart(idUser = userId, menuId)
 
-    suspend fun addItemToCart(payload:OrderItemPayload) = commonService.addItemToCart(
+    suspend fun addItemToCart(payload: OrderItemPayload) = commonService.addItemToCart(
         payload
     )
 
-    suspend fun updateItemToCart(payload:OrderItemPayload) = commonService.updateItemToCart(
+    suspend fun updateItemToCart(payload: OrderItemPayload) = commonService.updateItemToCart(
         id = payload.id.toString(), payload = payload
     )
+
+    suspend fun addToInvoice(payload: InvoicePayloadkt) = commonService.saveInvoice(
+        payload = payload)
 
     suspend fun deleteFromCart(id: String) =
         commonService.deleteFromCart(id)

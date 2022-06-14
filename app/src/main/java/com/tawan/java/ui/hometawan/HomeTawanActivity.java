@@ -27,7 +27,6 @@ import com.tawan.java.databinding.ActivityHomeTawanBinding;
 import com.tawan.java.databinding.BottomSheetAddMenuBinding;
 import com.tawan.java.ui.NavdrawContainerActivity;
 import com.tawan.java.ui.checkout.CheckoutActivity;
-import com.tawan.java.ui.home.MainTaskAdapter;
 import com.tawan.java.utils.UtilSnackbar;
 
 import kotlin.Lazy;
@@ -35,7 +34,6 @@ import kotlin.Lazy;
 public class HomeTawanActivity extends AppCompatActivity {
 
     ActivityHomeTawanBinding binding;
-    MainTaskAdapter adapter;
     MenuAdapter menuAdapter;
     private Lazy<HomeViewModel> homeViewModel = inject(HomeViewModel.class);
     boolean isAnyBottomSheetVisible = false;
@@ -59,7 +57,6 @@ public class HomeTawanActivity extends AppCompatActivity {
         binding = ActivityHomeTawanBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        adapter = new MainTaskAdapter();
         menuAdapter = new MenuAdapter();
 
         binding.greetingName.setText(getUserName() + "-" + getUserId());
@@ -82,6 +79,7 @@ public class HomeTawanActivity extends AppCompatActivity {
             }
             if (rr instanceof QumparanResource.Success) {
                 showLoadingOnSheetCheckout(false);
+                fetchUserCart();
                 setupLayoutBottomSheetOnExist(rr.getData());
             }
             if (rr instanceof QumparanResource.Error) {
@@ -90,12 +88,12 @@ public class HomeTawanActivity extends AppCompatActivity {
         });
 
         homeViewModel.getValue().getSaveCartLiveData().observe(this, res -> {
-            fetchUserCart();
             if (res instanceof QumparanResource.Loading) {
                 showLoading(true);
             }
             if (res instanceof QumparanResource.Success) {
                 showLoading(false);
+                fetchUserCart();
                 UtilSnackbar.showSnakbarSuccess(this, binding.getRoot(), "Berhasil Menambahkan Data");
             }
             if (res instanceof QumparanResource.Error) {
@@ -105,12 +103,12 @@ public class HomeTawanActivity extends AppCompatActivity {
         });
 
         homeViewModel.getValue().getUpdateCartLiveData().observe(this, res -> {
-            fetchUserCart();
             if (res instanceof QumparanResource.Loading) {
                 showLoading(true);
             }
             if (res instanceof QumparanResource.Success) {
                 showLoading(false);
+                homeViewModel.getValue().getUserCart(getUserId());
                 UtilSnackbar.showSnakbarSuccess(this, binding.getRoot(), "Berhasil Mengupdate Keranjang");
             }
             if (res instanceof QumparanResource.Error) {

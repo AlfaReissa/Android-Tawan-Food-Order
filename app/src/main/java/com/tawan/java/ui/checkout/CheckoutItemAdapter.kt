@@ -40,6 +40,14 @@ class CheckoutItemAdapter : RecyclerView.Adapter<CheckoutItemAdapter.AdapterView
             }
             binding.etJumlah.setText(model.quantity.toString())
 
+            binding.btnDelete.setOnClickListener {
+                adapterInterface.onDelete(model)
+            }
+
+            binding.btnEdit.setOnClickListener {
+                adapterInterface.onEdit(model)
+            }
+
             Glide
                 .with(binding.root)
                 .load(model.menu.thumbnailUrl)
@@ -74,5 +82,7 @@ class CheckoutItemAdapter : RecyclerView.Adapter<CheckoutItemAdapter.AdapterView
 
     interface ItemInterface {
         fun onclick(model: UserCartResponsekt.ResData.OrderedItem)
+        fun onDelete(model: UserCartResponsekt.ResData.OrderedItem)
+        fun onEdit(model: UserCartResponsekt.ResData.OrderedItem)
     }
 }

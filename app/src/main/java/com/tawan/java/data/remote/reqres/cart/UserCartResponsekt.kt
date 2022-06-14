@@ -23,7 +23,7 @@ data class UserCartResponsekt(
         @SerializedName("ordered_item")
         val orderedItem: List<OrderedItem>,
         @SerializedName("total_price")
-        val totalPrice: Int,
+        val totalPrice: Double,
         @SerializedName("total_price_rupiah_format")
         val totalPriceRupiahFormat: String,
         @SerializedName("total_quantity")
