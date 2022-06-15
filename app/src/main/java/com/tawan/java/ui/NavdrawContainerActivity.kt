@@ -45,11 +45,6 @@ class NavdrawContainerActivity : BaseActivity() {
         initData()
         initObserver()
 
-        binding.appBarNavdrawContainer.includeContent.apply {
-
-        }
-
-
         setSupportActionBar(binding.appBarNavdrawContainer.toolbar)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -93,9 +88,6 @@ class NavdrawContainerActivity : BaseActivity() {
         binding.appBarNavdrawContainer.includeContent.btnMenuDoc
 
         val headerView: View = binding.navView.getHeaderView(0)
-        val headerBinding: NavHeaderNavdrawContainerBinding =
-            NavHeaderNavdrawContainerBinding.bind(headerView)
-
 
     }
 

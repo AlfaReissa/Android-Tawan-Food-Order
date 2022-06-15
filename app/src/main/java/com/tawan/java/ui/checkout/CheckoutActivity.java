@@ -3,6 +3,7 @@ package com.tawan.java.ui.checkout;
 import static org.koin.java.KoinJavaComponent.inject;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -26,6 +27,7 @@ import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload;
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemResponse;
 import com.tawan.java.databinding.ActivityCheckoutBinding;
 import com.tawan.java.databinding.BottomSheetAddMenuBinding;
+import com.tawan.java.ui.history.HistoryActivity;
 import com.tawan.java.ui.hometawan.HomeViewModel;
 import com.tawan.java.utils.UtilSnackbar;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
@@ -110,6 +112,8 @@ public class CheckoutActivity extends AppCompatActivity {
             }
             if (res instanceof QumparanResource.Success) {
                 showLoading(false);
+                finish();
+                startActivity(new Intent(this, HistoryActivity.class));
                 UtilSnackbar.showSnakbarSuccess(this, binding.getRoot(), "Pesanan Berhasil Diinput, Track Pesanan pada menu riwayat");
             }
             if (res instanceof QumparanResource.Error) {

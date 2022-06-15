@@ -2,8 +2,10 @@ package com.tawan.java.data.remote
 
 import com.tawan.java.data.remote.reqres.invoice.InvoicePayload
 import com.tawan.java.data.remote.reqres.invoice.InvoicePayloadkt
+import com.tawan.java.data.remote.reqres.invoice.UserInvoiceResponsekt
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload
 import com.tawan.java.data.remote.service.ApiService
+import retrofit2.Response
 
 class RemoteDataSource(
     private val commonService: ApiService,
@@ -37,6 +39,9 @@ class RemoteDataSource(
 
     suspend fun deleteFromCart(id: String) =
         commonService.deleteFromCart(id)
+
+    suspend fun getInvoiceByUser(id: String) : Response<UserInvoiceResponsekt> =
+        commonService.getInvoiceHistoryByUser(id)
 
     suspend fun userCart(id: String) =
         commonService.getUserFoodCart(id)

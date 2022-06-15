@@ -8,35 +8,25 @@
     <application
         android:name="com.tawan.java.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/app_book_logo"
+        android:icon="@mipmap/ta_wan_resto_logo"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@mipmap/app_book_logo"
+        android:roundIcon="@mipmap/ta_wan_resto_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidTheme.NoActionBar">
 
         <activity
-            android:name="com.tawan.java.ui.lang.ChangeLanguageActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.tawan.java.ui.edittask.EditTaskActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.tawan.java.ui.new_task.NewTaskActivity"
-            android:exported="false" />
-        <activity
             android:name="com.tawan.java.ui.checkout.CheckoutActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.tawan.java.ui.history.HistoryActivity"
             android:exported="false" />
         <activity
             android:name="com.tawan.java.ui.hometawan.HomeTawanActivity"
             android:exported="false" />
         <activity
-            android:name="com.tawan.java.ui.home.HomeActivity"
-            android:exported="true" />
-        <activity
             android:name="com.tawan.java.ui.NavdrawContainerActivity"
             android:exported="true"
-            android:label="@string/title_activity_navdraw_container"
             android:theme="@style/Theme.AndroidTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

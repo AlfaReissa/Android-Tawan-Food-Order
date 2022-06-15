@@ -27,6 +27,7 @@ import com.tawan.java.databinding.ActivityHomeTawanBinding;
 import com.tawan.java.databinding.BottomSheetAddMenuBinding;
 import com.tawan.java.ui.NavdrawContainerActivity;
 import com.tawan.java.ui.checkout.CheckoutActivity;
+import com.tawan.java.ui.history.HistoryActivity;
 import com.tawan.java.utils.UtilSnackbar;
 
 import kotlin.Lazy;
@@ -260,6 +261,10 @@ public class HomeTawanActivity extends AppCompatActivity {
     }
 
     private void initView() {
+
+        binding.btnHistory.setOnClickListener(view -> {
+            startActivity(new Intent(this, HistoryActivity.class));
+        });
 
         binding.btnLogout.setOnClickListener(view -> {
             new MyPreference(this).clearPreferences();

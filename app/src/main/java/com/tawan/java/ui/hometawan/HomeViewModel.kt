@@ -9,6 +9,7 @@ import com.tawan.java.data.remote.reqres.*
 import com.tawan.java.data.remote.reqres.cart.UserCartResponsekt
 import com.tawan.java.data.remote.reqres.invoice.InvoicePayload
 import com.tawan.java.data.remote.reqres.invoice.InvoicePayloadkt
+import com.tawan.java.data.remote.reqres.invoice.UserInvoiceResponsekt
 import com.tawan.java.data.remote.reqres.menu.MenuTawanResponsekt
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemResponse
@@ -34,6 +35,10 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
     private var _saveInvoiceLiveData =
         MutableLiveData<QumparanResource<GeneralApiResponse?>>()
     val saveInvoiceLiveData get() = _saveInvoiceLiveData
+
+    private var _userInvoiceHistoryLiveData =
+        MutableLiveData<QumparanResource<UserInvoiceResponsekt?>>()
+    val userInvoiceHistoryLiveData get() = _userInvoiceHistoryLiveData
 
     private var _userCartLiveData =
         MutableLiveData<QumparanResource<UserCartResponsekt?>>()
@@ -195,6 +200,25 @@ class HomeViewModel(val ds: RemoteDataSource) : ViewModel() {
             }
         } catch (e: Exception) {
             _saveInvoiceLiveData.postValue(QumparanResource.Error(e.message.toString()))
+        }
+    }
+
+    fun getUserHistoryInvoice(id: String) = viewModelScope.launch {
+        _userInvoiceHistoryLiveData.postValue(QumparanResource.Loading())
+        try {
+            val res = ds.getInvoiceByUser(id)
+            if (res.isSuccessful) {
+                _userInvoiceHistoryLiveData.postValue(QumparanResource.Success(res.body()))
+            } else {
+                var message = res.message().toString()
+                res.errorBody()?.let {
+                    val jsonObj = JSONObject(it.charStream().readText())
+                    message = jsonObj.getString("message")
+                }
+                _userInvoiceHistoryLiveData.postValue(QumparanResource.Error(message))
+            }
+        } catch (e: Exception) {
+            _userInvoiceHistoryLiveData.postValue(QumparanResource.Error(e.message.toString()))
         }
     }
 

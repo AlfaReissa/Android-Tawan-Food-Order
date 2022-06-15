@@ -5,6 +5,7 @@ import com.tawan.java.data.remote.reqres.cart.UserCartResponsekt
 import com.tawan.java.data.remote.reqres.cuisine.CuisineTawanResponse
 import com.tawan.java.data.remote.reqres.invoice.InvoicePayload
 import com.tawan.java.data.remote.reqres.invoice.InvoicePayloadkt
+import com.tawan.java.data.remote.reqres.invoice.UserInvoiceResponsekt
 import com.tawan.java.data.remote.reqres.menu.MenuTawanResponsekt
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemPayload
 import com.tawan.java.data.remote.reqres.orderitem.OrderItemResponse
@@ -21,7 +22,7 @@ interface ApiService {
 
     @POST("food-cart/{id}/update")
     suspend fun updateItemToCart(
-        @Path("id") id:String,
+        @Path("id") id: String,
         @Body() payload: OrderItemPayload,
     ): Response<GeneralApiResponse>
 
@@ -44,6 +45,11 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String,
     ): Response<RegisterResponse>
+
+    @GET("food-invoice/user/{id}")
+    suspend fun getInvoiceHistoryByUser(
+        @Path("id") id: String
+    ): Response<UserInvoiceResponsekt>
 
     @POST("task-android/store")
     @FormUrlEncoded
