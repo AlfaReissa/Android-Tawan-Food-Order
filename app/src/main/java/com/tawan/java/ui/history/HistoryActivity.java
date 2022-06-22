@@ -68,10 +68,11 @@ public class HistoryActivity extends AppCompatActivity {
         initView();
         initData();
         fetchUserCart();
+        homeViewModel.getValue().getUserHistoryInvoice(getUserId());
     }
 
     private void initData() {
-        homeViewModel.getValue().getUserHistoryInvoice(getUserId());
+
         homeViewModel.getValue().getUserInvoiceHistoryLiveData().observe(this, rr -> {
             if (rr instanceof QumparanResource.Loading) {
                 showLoading(true);
